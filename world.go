@@ -98,3 +98,27 @@ func neighbourCount(a []bool, width, height, x, y int) int {
 	}
 	return c
 }
+
+func (w *World) makeCellAndNeighborsAlive(mouseX, mouseY int) {
+	cellWidth, cellHeight := w.cellDimensions()
+	// Convert mouse coordinates to cell position.
+	cellX := mouseX / cellWidth
+	cellY := mouseY / cellHeight
+
+	// Update the clicked cell and its neighbors.
+	for dy := -1; dy <= 1; dy++ {
+		for dx := -1; dx <= 1; dx++ {
+			nx, ny := cellX+dx, cellY+dy
+			// Check bounds.
+			if nx >= 0 && nx < w.width && ny >= 0 && ny < w.height {
+				w.area[ny*w.width+nx] = true
+			}
+		}
+	}
+}
+
+func (w *World) cellDimensions() (int, int) {
+	cellWidth := screenWidth / w.width
+	cellHeight := screenHeight / w.height
+	return cellWidth, cellHeight
+}
